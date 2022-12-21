@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "indigo-charge-372214",
+  "private_key_id": "89932d23d246b689d2b0dccd966c4afaee68e3d9",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCK8q64StKOrziF\n1PHceFIckWOWBafFOa5/wet2Q0GCgCO6sxJzSDA8wS/bPCPMEnS0KRBTYaqRZG09\nf/DX89DzDlnetb1aU0QbyxzPB2AuxC0r8SaFmseD7/4SmjSTl+PkUQfIS5oQOfdh\n32mLJ8cD3errn1BMgTIEL3BJB8IpaH09IqYnlpUIRl2RsWxgWYf9Ys14wl6x0f+s\njvKADaZ1XSGlr1E8zE7HdDuM6qRq2/Q6heeyzelZQ8n7Ss8jti5vFDIiJIx+NHEF\nsY/ZKp9yQWXYGC1ictU6Ms7ogYCgB3zLcfDuL2qYYUhSwZyHiXKP/0q/OUp7Z1XU\nIHvi1hApAgMBAAECggEABocmTEQ/pjJ3PlplzozclrkB679yRWLTXu82Z8T7I+1v\nQEs/d6kRkxkkbXFi4SiQ0RII0VIKWHBWbYhAQXUUAQdQk5UIQ2EcFw4w2U0oaKoQ\n0TqwK6C89ObmkesqwzBkpYplCjT7FP4UMEX1yHLi97yKV+2RMTb0qZus89Foftd3\nKBhc39CA0020bDMmP/idXJQXBzi7jYVk5dgUd2t+zhS515K/9nHy/UFHBsv7L4Bw\ncHhqhPtST/Ef3Kp3ouD8sDwPlJBPE2wsrzjY4mcLwCcVdoW1/rju6xy9kzYWMBnp\nSOzGye1BjLxaJo8fq5LHHwYnStgDGJAE0IVE0e3ozQKBgQDCPd2pwGj3IFHQF5Ux\nNvCTbQGf6cVWjFDshqm9sxUz6jZMs/vA2WWXoQXLsfQ4G0/zPr1K6XG4fT/apQNQ\n0kr26cHwfQ2i56aBjjH0Uq5ZACX5fGJN3XOLyynNGHOZ5kHbx423TNJedGaFZ882\nM8WvenWLtDgs1mem2wuJc8ybBwKBgQC3IDwCSqDiWXxZb9YFMPzB6c4Lxrb11XDo\n+WpLNTxwv+dmQTiMtrf+eHjjwHBliTJhMEJrSGrMu3hE/h6Pv91+F20LTMzHMFmL\nvorStkyJsU9rjz7EoMXyi2plAeK3ZrP4abzWtrpLlHs6ZyQZxuG4IChbxPjOcZs2\n3k103ri/TwKBgQC4VuYq14PGJFIAXqEkF7Ow9d542O6C+J9EGXi1o2MX5cqqeJUP\nrEGR6SsK6VOQe7sgagZTNcDLCXK0Ga5P4YNrWOTJSqTKWXXXtg8Kg/0aUd24K6dP\npj6mCKUfE3mCMNeHsJZ5wtpS8bzqFl68Xd3abylm8B3vz3qHC5KjW9ZtuQKBgQCi\nIrce7EZfwg0X/q3GMOZJJiIZSRpqtEzg6RuUdRELXs2ZOnvAEnL7qlyWgabCL2Pc\nqubTp+1vUTieFUSnz59i6YjRbXENlyBhWxX8lA1WCBgiSlSvsQ0xvwA3aCD8csE7\nWxsoG+b7zf4A6psK+4yUAlzZS59i4TEktlRr+lomfwKBgAjO+5ykQw2qFH08OfDJ\nSSMwE1kifCSUbGiT7cyxgwFVjfk5HA8hEDFCyuKF3ENRsKD0wGszYpA2lV7+Sbuf\nMaIPyhxEDI5YDwLitEgx4cwsnEXtthsi7ikKJy9xqTBPkMfwh8nDU5SS1KBWj3uq\nzJbXDRT6jsgOBJrvZcDJI7Tn\n-----END PRIVATE KEY-----\n",
+  "client_email": "serviceaccountforgooglesheet@indigo-charge-372214.iam.gserviceaccount.com",
+  "client_id": "109035552582463565964",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/serviceaccountforgooglesheet%40indigo-charge-372214.iam.gserviceaccount.com"
+}
