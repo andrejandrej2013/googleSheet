@@ -12,13 +12,47 @@ import random
 # print(list1.acell('D6').value)
 # print("\n")
 
-def rosenbergResualtGenerator(userSelfEsteemLevel=random.randint(0,2)):
+
+def spreadPoints(points,arraySize,oneSlotSizeMax,oneSlotSizeMin=0):
+    points-=oneSlotSizeMin*arraySize
+    if points<0:
+        print("Not correct parameters:","not enouth points for oneSlotSizeMin")
+        return None
+    personAnswers = [oneSlotSizeMin]*arraySize 
+    for i in range(len(personAnswers)):
+        if points == 0:
+            break
+        generatQuestionPoint=random.randint(oneSlotSizeMin,oneSlotSizeMax)
+        if points-generatQuestionPoint<0:
+            personAnswers[i]=points
+            break
+        personAnswers[i]=generatQuestionPoint
+        points-=generatQuestionPoint
+    if points>0:
+        while(points!=0):
+            for i in range(len(personAnswers)):
+                if points==0:
+                    break
+                if personAnswers[i]<3:
+                    personAnswers[i]+=1
+                    points-=1
+    elif points<0:
+        print("Some problems with userPoints calculations")
+        return None
+    random.shuffle(personAnswers) 
+    return personAnswers
+
+# SelfEsteem
+def getSelfEsteemResults(userSelfEsteemLevel=random.randint(0,2)):
     
     if userSelfEsteemLevel<0 or userSelfEsteemLevel>2:
+        print("err: self-esteem should be 0,1 or 2, the test reveals three levels of self-esteem (0:low, 1:normal, 2:high)")
         return "err: self-esteem should be 0,1 or 2, the test reveals three levels of self-esteem (0:low, 1:normal, 2:high)"
     
     maxPoints=30
+    arraySize=10
     normalSelfEsteemRange=[15,25]
+    oneSlotSizeMax=3
     
     userPoints = 0
     if userSelfEsteemLevel == 0:
@@ -27,61 +61,66 @@ def rosenbergResualtGenerator(userSelfEsteemLevel=random.randint(0,2)):
         userPoints = random.randint(normalSelfEsteemRange[0],normalSelfEsteemRange[1])
     else:
         userPoints = random.randint(normalSelfEsteemRange[1]+1,maxPoints)
+    
 
-    userAnswers = [0]*10
-    for i in range(len(userAnswers)):
-        generatQuestionPoint=random.randint(0,3)
-        if userPoints-generatQuestionPoint<0:
-            userAnswers[i]=userPoints
-            break
-        userAnswers[i]=generatQuestionPoint
-        userPoints-=generatQuestionPoint
-    if userPoints>0:
-        while(userPoints!=0):
-            for i in range(len(userAnswers)):
-                if userPoints==0:
-                    break
-                if userAnswers[i]<3:
-                    userAnswers[i]+=1
-                    userPoints-=1
-    elif userPoints<0:
-        print("Some problems with userPoints calculations")
-    random.shuffle(userAnswers)
-    return userAnswers
+    # return userPoints
+    return spreadPoints(userPoints,arraySize,oneSlotSizeMax)
+
+# Motivation
+# change functions +1 and middlePoints
+def highNumberPoints(x,pointsMax,sampleSize):
+    return int((-(pointsMax/(sampleSize**2))*(x**2))+(((2*pointsMax)/sampleSize)*x)+1)
+def lowNumberPoints(x,pointsMax,sampleSize):
+    return int(pointsMax/(sampleSize**2)*(x**2)+1)
+def middlePoints(x,pointsMax,sampleSize):
+    return None
+
+def getCommonMotivationsPoints(SELevel=random.randint(0,2)):
+    sample = 1000
+    extrinsicMaxPoints=100
+    intrinsicMaxPoints=50
+
+    if SELevel==0:
+        personExtrinsic=highNumberPoints(random.randint(1,sample),extrinsicMaxPoints)
+        personIntrinsic=lowNumberPoints(random.randint(1,sample),intrinsicMaxPoints)
+    elif SELevel==1:
+        personExtrinsic=personIntrinsic=middlePoints(random.randint(1,sample),extrinsicMaxPoints)
+    elif SELevel==2:
+        personExtrinsic=lowNumberPoints(random.randint(1,sample),extrinsicMaxPoints)
+        personIntrinsic=highNumberPoints(random.randint(1,sample),intrinsicMaxPoints)
+    else:
+        print("err: self-esteem should be 0,1 or 2, the test reveals three levels of self-esteem (0:low, 1:normal, 2:high)")
+        return "err"
+    return {"personExtrinsic":personExtrinsic,"personIntrinsic":personIntrinsic}
+
 class TUSMSQ2ResualtGenerator:
-    def highNumberPoints(x,xMax,yMax):
-        return int(-(yMax/(xMax**2))*x**2+((2*yMax)/xMax)*x)
-    def lowNumberPoints(x,xMax,yMax):
-        return int(yMax/(xMax**2)*(x**2))
-    def parabolaUp():
+    extrinsicMaxPoints=100
+    intrinsicMaxPoints=50
+    sample=0
+    SELevel=0
+
+    def highNumberPoints(x,pointsMax,sampleSize=sample):
+        return int((-(pointsMax/(sampleSize**2))*(x**2))+(((2*pointsMax)/sampleSize)*x)+1)
+    def lowNumberPoints(x,pointsMax,sampleSize=sample):
+        return int(pointsMax/(sampleSize**2)*(x**2)+1)
+    def middlePoints(x,pointsMax,sampleSize=sample):
         return
-    def parabolaDown():
-        return
-    def __init__():
-        x=2
-        # lowSE = [[xR,yR],[xL,yL],[xVertex,yVertex]]
-        # midSE = [[xR,yR],[xL,yL],[xVertex,yVertex]]
-        # highSE = [[xR,yR],[xL,yL],[xVertex,yVertex]]
+    def __init__(self,SELevel,sample):
+        self.sample=sample
+        self.SELevel=SELevel
+        if SELevel==0:
+            personExtrinsic=self.highNumberPoints(random.randint(1,self.sample),self.extrinsicMaxPoints)
+            personIntrinsic=self.lowNumberPoints(random.randint(1,self.sample),self.intrinsicMaxPoints)
+        elif SELevel==1:
+            personExtrinsic=personIntrinsic=self.middlePoints(random.randint(1,self.sample),self.extrinsicMaxPoints)
+        elif SELevel==2:
+            personExtrinsic=self.lowNumberPoints(random.randint(1,self.sample),self.extrinsicMaxPoints)
+            personIntrinsic=self.highNumberPoints(random.randint(1,self.sample),self.intrinsicMaxPoints)
+        else:
+            print("err: self-esteem should be 0,1 or 2, the test reveals three levels of self-esteem (0:low, 1:normal, 2:high)")
+            return "err: self-esteem should be 0,1 or 2, the test reveals three levels of self-esteem (0:low, 1:normal, 2:high)"
+        
 
+SELevel=0
+print(getSelfEsteemResults(SELevel))
 
-# print(rosenbergResualtGenerator(3))
-# print(TUSMSQ2ResualtGenerator(3))
-def highNumberPoints(x,xMax,yMax):
-    return int((-(yMax/(xMax**2))*(x**2))+(((2*yMax)/xMax)*x)+1)
-def lowNumberPoints(x,xMax,yMax):
-    return int(yMax/(xMax**2)*(x**2)+1)
-
-sample=10
-sum=0
-for i in range(10):
-    y=highNumberPoints(random.randint(1,sample),sample,10)
-    sum+=y
-    print(y,'\t')
-print(sum)
-print('\n')
-sum=0
-for i in range(10):
-    y=lowNumberPoints(random.randint(1,sample),sample,10)
-    sum+=y
-    print(y,'\t')
-print(sum)
