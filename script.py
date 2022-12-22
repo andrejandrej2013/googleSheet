@@ -49,11 +49,39 @@ def rosenbergResualtGenerator(userSelfEsteemLevel=random.randint(0,2)):
     random.shuffle(userAnswers)
     return userAnswers
 class TUSMSQ2ResualtGenerator:
+    def highNumberPoints(x,xMax,yMax):
+        return int(-(yMax/(xMax**2))*x**2+((2*yMax)/xMax)*x)
+    def lowNumberPoints(x,xMax,yMax):
+        return int(yMax/(xMax**2)*(x**2))
+    def parabolaUp():
+        return
+    def parabolaDown():
+        return
     def __init__():
         x=2
-    def TUSMSQ2ResualtGenerator(maxAmountOfPoints,angle=3,userSelfEsteemLevel=random.randint(0,2)):
-        points=[0,maxAmountOfPoints/2,maxAmountOfPoints]
+        # lowSE = [[xR,yR],[xL,yL],[xVertex,yVertex]]
+        # midSE = [[xR,yR],[xL,yL],[xVertex,yVertex]]
+        # highSE = [[xR,yR],[xL,yL],[xVertex,yVertex]]
 
 
-print(rosenbergResualtGenerator(3))
-print(TUSMSQ2ResualtGenerator(3))
+# print(rosenbergResualtGenerator(3))
+# print(TUSMSQ2ResualtGenerator(3))
+def highNumberPoints(x,xMax,yMax):
+    return int((-(yMax/(xMax**2))*(x**2))+(((2*yMax)/xMax)*x)+1)
+def lowNumberPoints(x,xMax,yMax):
+    return int(yMax/(xMax**2)*(x**2)+1)
+
+sample=10
+sum=0
+for i in range(10):
+    y=highNumberPoints(random.randint(1,sample),sample,10)
+    sum+=y
+    print(y,'\t')
+print(sum)
+print('\n')
+sum=0
+for i in range(10):
+    y=lowNumberPoints(random.randint(1,sample),sample,10)
+    sum+=y
+    print(y,'\t')
+print(sum)
