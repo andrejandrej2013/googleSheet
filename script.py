@@ -33,7 +33,7 @@ def spreadPoints(points,arraySize,oneSlotSizeMax,oneSlotSizeMin=0):
             for i in range(len(personAnswers)):
                 if points==0:
                     break
-                if personAnswers[i]<3:
+                if personAnswers[i]<oneSlotSizeMax:
                     personAnswers[i]+=1
                     points-=1
     elif points<0:
@@ -43,7 +43,7 @@ def spreadPoints(points,arraySize,oneSlotSizeMax,oneSlotSizeMin=0):
     return personAnswers
 
 # SelfEsteem
-def getSelfEsteemResults(userSelfEsteemLevel=random.randint(0,2)):
+def getSelfEsteemAnswersList(userSelfEsteemLevel=random.randint(0,2)):
     
     if userSelfEsteemLevel<0 or userSelfEsteemLevel>2:
         print("err: self-esteem should be 0,1 or 2, the test reveals three levels of self-esteem (0:low, 1:normal, 2:high)")
@@ -67,60 +67,60 @@ def getSelfEsteemResults(userSelfEsteemLevel=random.randint(0,2)):
     return spreadPoints(userPoints,arraySize,oneSlotSizeMax)
 
 # Motivation
-# change functions +1 and middlePoints
-def highNumberPoints(x,pointsMax,sampleSize):
-    return int((-(pointsMax/(sampleSize**2))*(x**2))+(((2*pointsMax)/sampleSize)*x)+1)
-def lowNumberPoints(x,pointsMax,sampleSize):
-    return int(pointsMax/(sampleSize**2)*(x**2)+1)
-def middlePoints(x,pointsMax,sampleSize):
-    return None
-
-def getCommonMotivationsPoints(SELevel=random.randint(0,2)):
+# add middlePoints
+def highNumberPoints(x,sampleSize,minPoints,maxPoints):
+    return int(((minPoints-maxPoints)/(sampleSize**2))*(x**2)+(2*(maxPoints-minPoints)/sampleSize)*x+(minPoints))
+def lowNumberPoints(x,sampleSize,minPoints,maxPoints):
+    return int((((maxPoints-minPoints)/(sampleSize**2))*(x**2))+minPoints)
+def middlePoints(x,sampleSize,minPoints,maxPoints):
+    tmpMaxPoints=(maxPoints-minPoints)/2
+    oneSidePoints=highNumberPoints(x,sampleSize,minPoints,tmpMaxPoints)
+    if random.randint(0,1):
+        oneSidePoints+=tmpMaxPoints-oneSidePoints
+    return oneSidePoints
+    
+def getMotivationAnswersList(SELevel=random.randint(0,2)):
     sample = 1000
-    extrinsicMaxPoints=100
-    intrinsicMaxPoints=50
+    maxExtrinsicPoints=100
+    maxIntrinsicPoints=50
+    extrinsicArraySize=20
+    intrinsicArraySize=10
+    oneSlotSizeMax=5
+    oneSlotSizeMin=1
+    # x,sampleSize,minPoints,maxPoints
 
+    # while True:
     if SELevel==0:
-        personExtrinsic=highNumberPoints(random.randint(1,sample),extrinsicMaxPoints)
-        personIntrinsic=lowNumberPoints(random.randint(1,sample),intrinsicMaxPoints)
+        personExtrinsic=highNumberPoints(random.randint(0,sample),sample,extrinsicArraySize,maxExtrinsicPoints)
+        personIntrinsic=lowNumberPoints(random.randint(0,sample),sample,intrinsicArraySize,maxIntrinsicPoints)
+        # if personExtrinsic<personIntrinsic and random.randint(0,1):
+        #     continue
+        # else:
+        #     break
     elif SELevel==1:
-        personExtrinsic=personIntrinsic=middlePoints(random.randint(1,sample),extrinsicMaxPoints)
+        personIntrinsic=middlePoints(random.randint(0,sample),sample,intrinsicArraySize,maxIntrinsicPoints)
+        personExtrinsic=middlePoints(random.randint(0,sample),sample,extrinsicArraySize,maxExtrinsicPoints)
     elif SELevel==2:
-        personExtrinsic=lowNumberPoints(random.randint(1,sample),extrinsicMaxPoints)
-        personIntrinsic=highNumberPoints(random.randint(1,sample),intrinsicMaxPoints)
+        personExtrinsic=lowNumberPoints(random.randint(0,sample),sample,extrinsicArraySize,maxExtrinsicPoints)
+        personIntrinsic=highNumberPoints(random.randint(0,sample),sample,intrinsicArraySize,maxIntrinsicPoints)
+        # if personExtrinsic>personIntrinsic and random.randint(0,1):
+        #     continue
+        # else:
+        #     break
     else:
         print("err: self-esteem should be 0,1 or 2, the test reveals three levels of self-esteem (0:low, 1:normal, 2:high)")
-        return "err"
-    return {"personExtrinsic":personExtrinsic,"personIntrinsic":personIntrinsic}
+        return None
+    
+    
+    return {"personExtrinsic":spreadPoints(personExtrinsic,extrinsicArraySize,oneSlotSizeMax,oneSlotSizeMin),"personIntrinsic":spreadPoints(personIntrinsic,intrinsicArraySize,oneSlotSizeMax,oneSlotSizeMin),"sum":[personExtrinsic,personIntrinsic]}
+     
 
-class TUSMSQ2ResualtGenerator:
-    extrinsicMaxPoints=100
-    intrinsicMaxPoints=50
-    sample=0
-    SELevel=0
 
-    def highNumberPoints(x,pointsMax,sampleSize=sample):
-        return int((-(pointsMax/(sampleSize**2))*(x**2))+(((2*pointsMax)/sampleSize)*x)+1)
-    def lowNumberPoints(x,pointsMax,sampleSize=sample):
-        return int(pointsMax/(sampleSize**2)*(x**2)+1)
-    def middlePoints(x,pointsMax,sampleSize=sample):
-        return
-    def __init__(self,SELevel,sample):
-        self.sample=sample
-        self.SELevel=SELevel
-        if SELevel==0:
-            personExtrinsic=self.highNumberPoints(random.randint(1,self.sample),self.extrinsicMaxPoints)
-            personIntrinsic=self.lowNumberPoints(random.randint(1,self.sample),self.intrinsicMaxPoints)
-        elif SELevel==1:
-            personExtrinsic=personIntrinsic=self.middlePoints(random.randint(1,self.sample),self.extrinsicMaxPoints)
-        elif SELevel==2:
-            personExtrinsic=self.lowNumberPoints(random.randint(1,self.sample),self.extrinsicMaxPoints)
-            personIntrinsic=self.highNumberPoints(random.randint(1,self.sample),self.intrinsicMaxPoints)
-        else:
-            print("err: self-esteem should be 0,1 or 2, the test reveals three levels of self-esteem (0:low, 1:normal, 2:high)")
-            return "err: self-esteem should be 0,1 or 2, the test reveals three levels of self-esteem (0:low, 1:normal, 2:high)"
-        
 
-SELevel=0
-print(getSelfEsteemResults(SELevel))
+SE=1
+
+for i in range(10):
+    print(getMotivationAnswersList(SE),"\n")
+
+
 
