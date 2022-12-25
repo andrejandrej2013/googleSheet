@@ -1,6 +1,7 @@
 import random
 import gspread
 from datetime import datetime, timedelta
+from colorama import Fore, Back, Style
 
 sa = gspread.service_account(filename="indigo-charge-372214-89932d23d246.json")
 sh = sa.open("Test")
@@ -87,20 +88,31 @@ def getMotivationAnswersList(userSelfEsteemLevel=random.randint(0,2)):
     oneSlotSizeMax=5
     oneSlotSizeMin=1
     motivationList=['e', 'i', 'e', 'e', 'e', 'i', 'e', 'i', 'e', 'e', 'e', 'i', 'e', 'i', 'e', 'e', 'e', 'i', 'e', 'i', 'e', 'e', 'e', 'i', 'e', 'i', 'e', 'e', 'e', 'i']
+    personExtrinsic=personIntrinsic=0
 
     if userSelfEsteemLevel==0:
-        personExtrinsic=highNumberPoints(random.randint(0,sample),sample,extrinsicArraySize,maxExtrinsicPoints)
-        personIntrinsic=lowNumberPoints(random.randint(0,sample),sample,intrinsicArraySize,maxIntrinsicPoints)
+        while True:
+            personExtrinsic=highNumberPoints(random.randint(0,sample),sample,extrinsicArraySize,maxExtrinsicPoints)
+            personIntrinsic=lowNumberPoints(random.randint(0,sample),sample,intrinsicArraySize,maxIntrinsicPoints)
+            if personExtrinsic/maxExtrinsicPoints<personIntrinsic/maxIntrinsicPoints and random.randint(0,1):
+                continue
+            break
     elif userSelfEsteemLevel==1:
         personIntrinsic=middlePoints(random.randint(0,sample),sample,intrinsicArraySize,maxIntrinsicPoints)
         personExtrinsic=middlePoints(random.randint(0,sample),sample,extrinsicArraySize,maxExtrinsicPoints)
+        
     elif userSelfEsteemLevel==2:
-        personExtrinsic=lowNumberPoints(random.randint(0,sample),sample,extrinsicArraySize,maxExtrinsicPoints)
-        personIntrinsic=highNumberPoints(random.randint(0,sample),sample,intrinsicArraySize,maxIntrinsicPoints)
+        while True:
+            personExtrinsic=lowNumberPoints(random.randint(0,sample),sample,extrinsicArraySize,maxExtrinsicPoints)
+            personIntrinsic=highNumberPoints(random.randint(0,sample),sample,intrinsicArraySize,maxIntrinsicPoints)
+            if personExtrinsic/maxExtrinsicPoints>personIntrinsic/maxIntrinsicPoints and random.randint(0,1):
+                continue
+            break
     else:
         print("err: self-esteem should be 0, 1 or 2, the test reveals three levels of self-esteem (0:low, 1:normal, 2:high)")
         return None
     # print(personExtrinsic,personIntrinsic)
+
     while True:
         personExtrinsic=deviation(personExtrinsic)
         personIntrinsic=deviation(personIntrinsic)
@@ -139,26 +151,36 @@ def getNextDateTime(previousDateTime):
     if nextDateTime>now:
         print("err: cant be bigger than current datetime")
         return None
+    nextDateTime=nextDateTime.strftime("%d.%m.%Y %H:%M:%S")
+    print(str(nextDateTime))
     return nextDateTime
 
 def writeResualts(number,worksheet):
-    POSITIONS=[1,2,4,35]
+    POSITIONS=[0,1,3,34]
     emptyRow=int(next_available_row(worksheet))
     for i in range(number):
+        answerList=  [None] * 44
         selfEsteemLevel=random.randint(0,2)
-        print(getNextDateTime(worksheet.cell(emptyRow-1, 1).value))
-        print(type(getNextDateTime(worksheet.cell(emptyRow-1, 1).value)))
-        worksheet.update_cell(emptyRow,POSITIONS[0], str(getNextDateTime(worksheet.cell(emptyRow-1, 1).value)))
-        worksheet.update_cell(emptyRow,POSITIONS[1], random.randint(17,23))
+        print(Back.GREEN + "selfEsteemLevel : "+str(selfEsteemLevel)+Style.RESET_ALL)
+        # print(Style.RESET_ALL)
+        answerList[POSITIONS[0]] = str(getNextDateTime(worksheet.cell(emptyRow-1, 1).value))
+        answerList[POSITIONS[1]] = random.randint(17,23)
+        # worksheet.update_cell(emptyRow,POSITIONS[0], str(getNextDateTime(worksheet.cell(emptyRow-1, 1).value)))
+        # worksheet.update_cell(emptyRow,POSITIONS[1], random.randint(17,23))
         motivationAnswersList=getMotivationAnswersList(selfEsteemLevel)
-        for i in range(len(motivationAnswersList)):
-            worksheet.update_cell(emptyRow,POSITIONS[2+i], motivationAnswersList[i])
         selfEsteemAnswersList=getSelfEsteemAnswersList(selfEsteemLevel)
-        for i in range(len(selfEsteemAnswersList)):
-            worksheet.update_cell(emptyRow,POSITIONS[3+i], selfEsteemAnswersList[i])    
+        
+        for j in range(len(motivationAnswersList)):
+            answerList[POSITIONS[2]+j] = motivationAnswersList[j]
+            # worksheet.update_cell(emptyRow,POSITIONS[2]+j, motivationAnswersList[j])
+        for j in range(len(selfEsteemAnswersList)):
+            answerList[POSITIONS[3]+j] = selfEsteemAnswersList[j]
+            # worksheet.update_cell(emptyRow,POSITIONS[3]+j, selfEsteemAnswersList[j])    
+        
+        worksheet.insert_row(answerList,emptyRow)
         emptyRow+=1
+        
 
-writeResualts(1,list2)
-# list2.update_cell(17,1,"hi")
+writeResualts(10,list2)
 
 
