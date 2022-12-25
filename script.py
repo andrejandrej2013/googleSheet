@@ -155,32 +155,37 @@ def getNextDateTime(previousDateTime):
     print(str(nextDateTime))
     return nextDateTime
 
+def getNextId(worksheet,emptyRow):
+    val = worksheet.cell(emptyRow-1, worksheet.find("ID").col).value
+    return val
 def writeResualts(number,worksheet):
-    POSITIONS=[0,1,3,34]
+    POSITIONS=[0,1,2,4,35]
     emptyRow=int(next_available_row(worksheet))
     for i in range(number):
-        answerList=  [None] * 44
+        answerList=  [None] * 50
         selfEsteemLevel=random.randint(0,2)
         print(Back.GREEN + "selfEsteemLevel : "+str(selfEsteemLevel)+Style.RESET_ALL)
         # print(Style.RESET_ALL)
-        answerList[POSITIONS[0]] = str(getNextDateTime(worksheet.cell(emptyRow-1, 1).value))
-        answerList[POSITIONS[1]] = random.randint(17,23)
+        answerList[POSITIONS[0]] = int(getNextId(worksheet,emptyRow))+1
+        print(answerList[POSITIONS[0]])
+        answerList[POSITIONS[1]] = str(getNextDateTime(worksheet.cell(emptyRow-1, worksheet.find("DateTime").col).value))
+        answerList[POSITIONS[2]] = random.randint(17,23)
         # worksheet.update_cell(emptyRow,POSITIONS[0], str(getNextDateTime(worksheet.cell(emptyRow-1, 1).value)))
         # worksheet.update_cell(emptyRow,POSITIONS[1], random.randint(17,23))
         motivationAnswersList=getMotivationAnswersList(selfEsteemLevel)
         selfEsteemAnswersList=getSelfEsteemAnswersList(selfEsteemLevel)
         
         for j in range(len(motivationAnswersList)):
-            answerList[POSITIONS[2]+j] = motivationAnswersList[j]
+            answerList[POSITIONS[3]+j] = motivationAnswersList[j]
             # worksheet.update_cell(emptyRow,POSITIONS[2]+j, motivationAnswersList[j])
         for j in range(len(selfEsteemAnswersList)):
-            answerList[POSITIONS[3]+j] = selfEsteemAnswersList[j]
+            answerList[POSITIONS[4]+j] = selfEsteemAnswersList[j]
             # worksheet.update_cell(emptyRow,POSITIONS[3]+j, selfEsteemAnswersList[j])    
         
         worksheet.insert_row(answerList,emptyRow)
         emptyRow+=1
         
 
-writeResualts(10,list2)
+writeResualts(1,list1)
 
 
